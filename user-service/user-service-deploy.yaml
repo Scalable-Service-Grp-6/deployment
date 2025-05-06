@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-service
+  namespace: scalable-services-project
+  labels:
+    app: user-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: user-service
+  template:
+    metadata:
+      labels:
+        app: user-service
+    spec:
+      containers:
+      - name: user-service
+        image: user-service:1.0
+        imagePullPolicy: Never
+        ports:
+        - name: user-port
+          containerPort: 4000
+        - name: inter-port
+          containerPort: 4001
+        resources:
+          limits:
+            cpu: "0.5"
+            memory: "256Mi"
+          requests:
+            cpu: "0.2"
+            memory: "128Mi"
+        env:
+        - name: MONGODB_ADMIN_USER_NAME
+          valueFrom:
+            secretKeyRef:
+              name: mongodb-secret
+              key: mongodb-root-username
+        - name: MONGODB_ADMIN_USER_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mongodb-secret
+              key: mongodb-root-password
+        - name: PORT
+          value: "4000"
+        - name: MONGODB_URL
+          value: mongodb-service/userdb?authSource=admin
+        - name: INTERSERVICES_PORT
+          value: "4001"
+        - name: DB_CONNECTION_RETRY_TIMEOUT  
+          value: "5000"          
