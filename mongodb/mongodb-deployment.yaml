@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: mongodb
-  namespace: scalable-services-project
   labels:
     app: mongodb
 spec:
@@ -34,12 +33,12 @@ spec:
         - name: MONGO_INITDB_ROOT_USERNAME
           valueFrom:
             secretKeyRef:
-              name: mongodb-secret
+              name: movie-booking-system-secret
               key: mongodb-root-username
         - name: MONGO_INITDB_ROOT_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: mongodb-secret
+              name: movie-booking-system-secret
               key: mongodb-root-password
       volumes:
       - name: mongodb-data
