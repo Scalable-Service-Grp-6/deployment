@@ -54,8 +54,10 @@ spec:
           value: "mongodb://$(MONGODB_ADMIN_USER_NAME):$(MONGODB_ADMIN_USER_PASSWORD)@$(MONGODB_URL_PATH)/$(MONGODB_USER_DB)?authSource=admin"
         - name: DB_CONNECTION_RETRY_TIMEOUT  
           value: "5000"          
-        - name: AUTH_URL
+        - name: AUTH_ROOT_URL
           valueFrom:
             configMapKeyRef:
               name: movie-booking-system-config
               key: user_service_url
+        - name: AUTH_URL
+          value: "$(AUTH_ROOT_URL):4000"
