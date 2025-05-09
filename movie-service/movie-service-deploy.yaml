@@ -1,25 +1,25 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: user-service
+  name: movie-service
   labels:
-    app: user-service
+    app: movie-service
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: user-service
+      app: movie-service
   template:
     metadata:
       labels:
-        app: user-service
+        app: movie-service
     spec:
       containers:
-      - name: user-service
-        image: user-service:1.0
+      - name: movie-service
+        image: movie-service:1.0
         imagePullPolicy: Never
         ports:
-          - containerPort: 4000
+        - containerPort: 8081
         resources:
           limits:
             cpu: "0.5"
@@ -51,6 +51,11 @@ spec:
               name: movie-booking-system-config
               key: database_user_db
         - name: MONGODB_URL
-          value: "$(MONGODB_URL_PATH)/$(MONGODB_USER_DB)?authSource=admin"
+          value: "mongodb://$(MONGODB_ADMIN_USER_NAME):$(MONGODB_ADMIN_USER_PASSWORD)@$(MONGODB_URL_PATH)/$(MONGODB_USER_DB)?authSource=admin"
         - name: DB_CONNECTION_RETRY_TIMEOUT  
           value: "5000"          
+        - name: AUTH_URL
+          valueFrom:
+            configMapKeyRef:
+              name: movie-booking-system-config
+              key: user_service_url
