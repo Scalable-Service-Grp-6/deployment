@@ -4,5 +4,6 @@ metadata:
   name: movie-booking-system-config
 data:
   database_url: mongodb-service
-  user_service_url: user-service
   database_user_db: user_db
+  user_service_url: user-service:4000
+  payment_service_url: payment-service:4002

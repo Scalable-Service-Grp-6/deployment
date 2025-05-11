@@ -1,25 +1,25 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: movie-service
+  name: booking-service
   labels:
-    app: movie-service
+    app: booking-service
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: movie-service
+      app: booking-service
   template:
     metadata:
       labels:
-        app: movie-service
+        app: booking-service
     spec:
       containers:
-      - name: movie-service
-        image: movie-service:1.0
+      - name: booking-service
+        image: booking-service:1.0
         imagePullPolicy: Never
         ports:
-        - containerPort: 8081
+        - containerPort: 9096
         resources:
           limits:
             cpu: "0.5"
@@ -59,4 +59,8 @@ spec:
             configMapKeyRef:
               name: movie-booking-system-config
               key: user_service_url
-
+        - name: PAYMENT_URL
+          valueFrom:
+            configMapKeyRef:
+              name: movie-booking-system-config
+              key: payment_service_url
